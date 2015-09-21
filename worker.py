@@ -7,7 +7,7 @@ def analyze(filename) :
     print "/hdfs"+filename[1][31:]
     tree = file.Get("rawDataTree")
     ROOT.gSystem.Load("libMinuit2")
-    ROOT.gSystem.Load("libMDM_test_analysis.so")
+    ROOT.gSystem.Load("libs32_li6_d_analysis.so")
     print "Starting Calibrations Loading..."
     ROOT.SMDMCalibration.Init()
     print "Finished Calibrations Loading..."

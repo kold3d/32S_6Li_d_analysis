@@ -9,7 +9,7 @@ if __name__ == "__main__" :
     sconf.set("spark.mesos.coarse", "false")
     sc = SparkContext(conf=sconf)
 
-    sc.addFile("libMDM_test_analysis.so")
+    sc.addFile("libs32_li6_d_analysis.so")
     sc.addFile("param.in")
     sc.addFile("rayin.dat")
 

@@ -18,6 +18,6 @@ set(headers SMDMAnalysis.h SMDMCalibration.h MDMTraceFit.h)
 set(sources SMDMAnalysis.C SMDMCalibration.C MDMTraceFit.cpp)
 
 ROOT_GENERATE_DICTIONARY(s32_li6_d_analysis_Dict ${headers} LINKDEF LinkDef.h)
-add_library(32s_li6_d_analysis SHARED ${headers} ${sources} s32_li6_d_analysis_Dict.cxx)
+add_library(s32_li6_d_analysis SHARED ${headers} ${sources} s32_li6_d_analysis_Dict.cxx)
 
-target_link_libraries(32s_li6_d_analysis ${ROOT_LIBRARIES} MDMTrace)
+target_link_libraries(s32_li6_d_analysis ${ROOT_LIBRARIES} MDMTrace)
