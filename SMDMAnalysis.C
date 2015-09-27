@@ -46,7 +46,7 @@ void SMDMAnalysis::Begin(TTree * /*tree*/)
       TString name1 = Form("energy_cal_%d_%d",i+1,j+1);
       //h_raw[i]= new TH1F(name, name, 200,0,10000);
       si_hist[i][j] = new TH1F(name1,name1,200,0,40000);
-      si_t_hist[i][j] = new TH1F(name,name,200,10000,30000);
+      //si_t_hist[i][j] = new TH1F(name,name,200,10000,30000);
     }
   }    
 
@@ -93,24 +93,24 @@ Bool_t SMDMAnalysis::Process(Long64_t entry)
   Int_t highSiEDet = -1;
   Int_t highSiEQuad = -1;
   float highSiE = 0.;
-  float highSiT = 0.;
+  //float highSiT = 0.;
 
   float calE,rawE;
 
   for(Int_t i=0; i<siQuadMul; i++) {
 
-    if (siQuadT[i]< 1000) continue;
+    //if (siQuadT[i]> 0.) continue;
 
-  si_t_hist[highSiEDet-1][highSiEQuad-1]->Fill(highSiT);
+  //si_t_hist[highSiEDet-1][highSiEQuad-1]->Fill(highSiT);
 
       calE = siQuadE[i]*SMDMCalibration::paramList1.det[siQuadDet[i]-1][siQuadQuad[i]-1][0] + SMDMCalibration::paramList1.det[siQuadDet[i]-1][siQuadQuad[i]-1][1];
-      rawE = (Float_t)siQuadE[i];
+      //rawE = (Float_t)siQuadE[i];
     
       if(calE>highSiE) {
 	highSiE = calE;
 	highSiEDet = siQuadDet[i];
 	highSiEQuad = siQuadQuad[i];
-	highSiT = siQuadT[i];
+	//highSiT = siQuadT[i];
       }
   }
   si_hist[highSiEDet-1][highSiEQuad-1]->Fill(calE);
