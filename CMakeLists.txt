@@ -9,15 +9,10 @@ set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${ROOT_CXX_FLAGS}")
 include_directories(${ROOT_INCLUDE_DIR} ${CMAKE_SOURCE_DIR})
 link_directories(${ROOT_LIBRARY_DIR})
 
-include_directories("/hdfs/software/MDMTrace/include")
-link_directories("/hdfs/software/MDMTrace/lib")
-
 set(LIBRARY_OUTPUT_PATH "${CMAKE_BINARY_DIR}")
 
-set(headers SMDMAnalysis.h SMDMCalibration.h MDMTraceFit.h)
-set(sources SMDMAnalysis.C SMDMCalibration.C MDMTraceFit.cpp)
+set(headers SMDMAnalysis.h SMDMCalibration.h )
+set(sources SMDMAnalysis.C SMDMCalibration.C )
 
 ROOT_GENERATE_DICTIONARY(s32_li6_d_analysis_Dict ${headers} LINKDEF LinkDef.h)
 add_library(s32_li6_d_analysis SHARED ${headers} ${sources} s32_li6_d_analysis_Dict.cxx)
-
-target_link_libraries(s32_li6_d_analysis ${ROOT_LIBRARIES} MDMTrace)

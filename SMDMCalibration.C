@@ -1,11 +1,12 @@
 #include "SMDMCalibration.h"
+#include <algorithm>
 
 void SMDMCalibration::Init() {
 
 
   std::ifstream param("param.in");
   if(param) {
-    printf("Reading param.in...\n");
+    //printf("Reading param.in...\n");
     float parameterList[25];
     int i = 0;
     while(!param.eof()) {
@@ -48,47 +49,43 @@ void SMDMCalibration::Init() {
     paramList.c2 = parameterList[23];
     paramList.c3 = parameterList[24];
 
-    for(int i=0; i<25; i++) {
+    /*for(int i=0; i<25; i++) {
       printf("%g\n",parameterList[i]);
     }
     printf("Done reading and assigning param.in...\n\n");
+    */
   }
 
-  std::ifstream gates("ang14_gates.in");
-  if(gates) {
-    printf("Reading ang14_gates.in...\n");
-    float parameterList1[10];
+  std::ifstream calibs("si_calib.in");
+  if(calibs) {
+    //printf("Reading si_calib.in...\n");
+    Float_t parameterList1[12][2];
     int j=0;
-    while(!gates.eof()) {
+    while(!calibs.eof()) {
       std::string line1;
-      std::getline(gates,line1);
-      if(!gates.eof()) {
+      std::getline(calibs,line1);
+      if(!calibs.eof()) {
 	std::istringstream stm1;
 	stm1.str(line1);
-	float value1, value2;
+	Float_t value1, value2;
 	stm1 >> value1 >> value2;
-	parameterList1[j] = value1;
-	parameterList1[j+1] = value2;
-	j+=2;
+	parameterList1[j][0] = value1;
+	parameterList1[j][1] = value2;
+	j++;
       }
     }
-    paramList1.ang_low[4] = parameterList1[0];
-    paramList1.ang_high[4] = parameterList1[1];
-    paramList1.ang_low[3] = parameterList1[2];
-    paramList1.ang_high[3] = parameterList1[3];
-    paramList1.ang_low[2] = parameterList1[4];
-    paramList1.ang_high[2] = parameterList1[5];
-    paramList1.ang_low[1] = parameterList1[6];
-    paramList1.ang_high[1] = parameterList1[7];
-    paramList1.ang_low[0] = parameterList1[8];
-    paramList1.ang_high[0] = parameterList1[9];
 
-    for(int i=0; i<10; i++) 
-      printf("%g\n",parameterList1[i]);
+    for (int x=0; x<12; x++) {
+    paramList1.det[x][0] = parameterList1[x][0];
+    paramList1.det[x][1] = parameterList1[x][1];
+    }
+    /*
+    for(int i=0; i<12; i++) 
+      printf("%4.5e\t%4.5e\n",parameterList1[i][0], parameterList1[i][1]);
 
-    printf("Done reading and assigning ang14_gates.in...\n\n");
+    printf("Done reading and assigning si_calib.in...\n\n");
+    */
   }
-
 }
 
 parList SMDMCalibration::paramList;

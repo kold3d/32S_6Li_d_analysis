@@ -13,6 +13,8 @@
 #include <TFile.h>
 #include <TSelector.h>
 
+#include <TH1F.h>
+
 // Header file for the classes stored in the TTree if any.
 
 // Fixed size dimensions of array or collections stored in the TTree if any.
@@ -72,6 +74,11 @@ public :
    TBranch        *b_pmE;   //!
    TBranch        *b_pmT;   //!
    TBranch        *b_tdcRef;   //!
+
+   Int_t fEventSeen;
+
+   TH1F* si_hist[3][4];
+   TH1F* si_cal_hist[3][4];
 
    SMDMAnalysis(TTree * /*tree*/ =0) : fChain(0) { }
    virtual ~SMDMAnalysis() { }

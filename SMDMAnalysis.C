@@ -24,9 +24,12 @@
 //
 
 #include "SMDMAnalysis.h"
+#include "SMDMCalibration.h"
 #include <TH2.h>
 #include <TStyle.h>
 
+#include <iostream>
+#include <fstream>
 
 void SMDMAnalysis::Begin(TTree * /*tree*/)
 {
@@ -34,7 +37,19 @@ void SMDMAnalysis::Begin(TTree * /*tree*/)
    // When running with PROOF Begin() is only called on the client.
    // The tree argument is deprecated (on PROOF 0 is passed).
 
+   std::cout << "Starting..." <<std::endl;
    TString option = GetOption();
+
+  for(Int_t i=0; i<3; i++) {
+    for(Int_t j=0; j<4; j++) {
+      TString name = Form("energy_%d_%d",i+1,j+1);
+      TString name1 = Form("energy_cal_%d_%d",i+1,j+1);
+      si_hist[i][j]= new TH1F(name, name, 200,0,10000);
+      si_cal_hist[i][j] = new TH1F(name1,name1,200,0,10000);
+    }
+  }    
+
+   fEventSeen = 0;
 
 }
 
@@ -68,6 +83,17 @@ Bool_t SMDMAnalysis::Process(Long64_t entry)
    //
    // The return value is currently not used.
 
+  fChain->GetTree()->GetEntry(entry);
+  fEventSeen++;
+
+  if(fEventSeen !=0 && fEventSeen % 10000 ==0)
+    std::cout << "Processed "<< fEventSeen << " events..." << std::endl;
+
+  for(Int_t i=0; i<3; i++) {
+    for(Int_t j=0; j<4; j++) {
+      si_hist[i][j]->Fill(5.0);
+    }
+  }
 
    return kTRUE;
 }

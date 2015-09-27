@@ -6,6 +6,8 @@
 #include <sstream>
 #include <string>
 #include <vector>
+#include <TROOT.h>
+#include <map>
 
 typedef struct parList {
   float p11; float p12; float p13;
@@ -20,7 +22,7 @@ typedef struct parList {
 } parList;
 
 typedef struct parList1 {
-  float ang_low[5]; float ang_high[5];
+  Float_t det[12][2];
 } parList1;
 
 class SMDMCalibration {
