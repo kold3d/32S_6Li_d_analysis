@@ -78,7 +78,7 @@ public :
    Int_t fEventSeen;
 
    TH1F* si_hist[3][4];
-   //TH1F* si_cal_hist[12];
+   TH1F* si_t_hist[3][4];
 
    SMDMAnalysis(TTree * /*tree*/ =0) : fChain(0) { }
    virtual ~SMDMAnalysis() { }
