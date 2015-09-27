@@ -1,3 +1,5 @@
 Steps to run:
-	root Chain.C
-	.X Run.C(rawDataTree)
+	cd build
+	make
+	cp libs32... ..
+	./submit

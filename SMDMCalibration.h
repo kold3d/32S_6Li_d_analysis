@@ -22,7 +22,7 @@ typedef struct parList {
 } parList;
 
 typedef struct parList1 {
-  Float_t det[12][2];
+  Float_t det[3][4][2];
 } parList1;
 
 class SMDMCalibration {

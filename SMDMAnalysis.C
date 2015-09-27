@@ -40,13 +40,11 @@ void SMDMAnalysis::Begin(TTree * /*tree*/)
    std::cout << "Starting..." <<std::endl;
    TString option = GetOption();
 
-  for(Int_t i=0; i<3; i++) {
-    for(Int_t j=0; j<4; j++) {
-      TString name = Form("energy_%d_%d",i+1,j+1);
-      TString name1 = Form("energy_cal_%d_%d",i+1,j+1);
-      si_hist[i][j]= new TH1F(name, name, 200,0,10000);
-      si_cal_hist[i][j] = new TH1F(name1,name1,200,0,10000);
-    }
+  for(Int_t i=0; i<12; i++) {
+      TString name = Form("energy_%d",i+1);
+      TString name1 = Form("energy_cal_%d",i+1);
+      //h_raw[i]= new TH1F(name, name, 200,0,10000);
+      si_hist[(int)floor(i/4.)][i%4] = new TH1F(name1,name1,200,0,2500);
   }    
 
    fEventSeen = 0;
@@ -89,11 +87,23 @@ Bool_t SMDMAnalysis::Process(Long64_t entry)
   if(fEventSeen !=0 && fEventSeen % 10000 ==0)
     std::cout << "Processed "<< fEventSeen << " events..." << std::endl;
 
-  for(Int_t i=0; i<3; i++) {
-    for(Int_t j=0; j<4; j++) {
-      si_hist[i][j]->Fill(5.0);
-    }
+  Int_t highSiEDet = -1;
+  Int_t highSiEQuad = -1;
+  float highSiE = 0.;
+
+  float calE,rawE;
+
+  for(Int_t i=0; i<siQuadMul; i++) {
+      calE = siQuadE[i]*SMDMCalibration::paramList1.det[siQuadDet[i]-1][siQuadQuad[i]-1][0] + SMDMCalibration::paramList1.det[siQuadDet[i]-1][siQuadQuad[i]-1][1];
+      rawE = (Float_t)siQuadE[i];
+    
+      if(calE>highSiE) {
+	highSiE = calE;
+	highSiEDet = siQuadDet[i];
+	highSiEQuad = siQuadQuad[i];
+      }
   }
+  si_hist[highSiEDet-1][highSiEQuad-1]->Fill(calE);
 
    return kTRUE;
 }

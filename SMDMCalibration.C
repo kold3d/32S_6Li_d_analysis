@@ -1,5 +1,6 @@
 #include "SMDMCalibration.h"
 #include <algorithm>
+#include "math.h"
 
 void SMDMCalibration::Init() {
 
@@ -75,13 +76,14 @@ void SMDMCalibration::Init() {
       }
     }
 
-    for (int x=0; x<12; x++) {
-    paramList1.det[x][0] = parameterList1[x][0];
-    paramList1.det[x][1] = parameterList1[x][1];
+    for (int i=0; i<12; i++) {
+      paramList1.det[(int)floor(i/4.)][i%4][0] = parameterList1[i][0];
+      paramList1.det[(int)floor(i/4.)][i%4][1] = parameterList1[i][1];
     }
-    /*
+
+   /*
     for(int i=0; i<12; i++) 
-      printf("%4.5e\t%4.5e\n",parameterList1[i][0], parameterList1[i][1]);
+      printf("%4.5e\t%4.5e\n",paramList1.det[(int)floor(i/4.)][i%4][0], paramList1.det[(int)floor(i/4.)][i%4][1]);
 
     printf("Done reading and assigning si_calib.in...\n\n");
     */

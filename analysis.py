@@ -5,7 +5,7 @@ from runlist import file_name
 
 if __name__ == "__main__" :
     #setup cluster
-    sconf = SparkConf().setAppName("MDMAnalysis")
+    sconf = SparkConf().setAppName("S32")
     sconf.set("spark.mesos.coarse", "false")
     sc = SparkContext(conf=sconf)
 
