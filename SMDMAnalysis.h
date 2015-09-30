@@ -79,6 +79,7 @@ public :
 
    TH1F* si_hist[3][4];
    TH1F* si_t_hist[3][4];
+   TH1F* si_t_all;
 
    SMDMAnalysis(TTree * /*tree*/ =0) : fChain(0) { }
    virtual ~SMDMAnalysis() { }

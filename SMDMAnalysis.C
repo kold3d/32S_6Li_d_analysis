@@ -43,12 +43,14 @@ void SMDMAnalysis::Begin(TTree * /*tree*/)
   for(Int_t i=0; i<3; i++) {
     for(Int_t j=0; j<4;j++ ) {
       TString name = Form("timing_%d_%d",i+1,j+1);
-      TString name1 = Form("energy_cal_%d_%d",i+1,j+1);
+      TString name1 = Form("raw_energy_%d_%d",i+1,j+1);
       //h_raw[i]= new TH1F(name, name, 200,0,10000);
-      si_hist[i][j] = new TH1F(name1,name1,200,0,40000);
+      si_hist[i][j] = new TH1F(name1,name1,1000,0,40000);
       //si_t_hist[i][j] = new TH1F(name,name,200,10000,30000);
     }
-  }    
+  }
+
+  si_t_all = new TH1F("si_t_all","si_t_all",10000,0,40000);  
 
    fEventSeen = 0;
 
@@ -93,7 +95,8 @@ Bool_t SMDMAnalysis::Process(Long64_t entry)
   Int_t highSiEDet = -1;
   Int_t highSiEQuad = -1;
   float highSiE = 0.;
-  //float highSiT = 0.;
+  float highSiT = 0.;
+  Int_t highSiIndex = -1;
 
   float calE,rawE;
 
@@ -103,17 +106,30 @@ Bool_t SMDMAnalysis::Process(Long64_t entry)
 
   //si_t_hist[highSiEDet-1][highSiEQuad-1]->Fill(highSiT);
 
-      calE = siQuadE[i]*SMDMCalibration::paramList1.det[siQuadDet[i]-1][siQuadQuad[i]-1][0] + SMDMCalibration::paramList1.det[siQuadDet[i]-1][siQuadQuad[i]-1][1];
-      //rawE = (Float_t)siQuadE[i];
+     calE = siQuadE[i]*SMDMCalibration::paramList1.det[siQuadDet[i]-1][siQuadQuad[i]-1][0] + SMDMCalibration::paramList1.det[siQuadDet[i]-1][siQuadQuad[i]-1][1];
+      rawE = siQuadE[i];
     
       if(calE>highSiE) {
 	highSiE = calE;
 	highSiEDet = siQuadDet[i];
 	highSiEQuad = siQuadQuad[i];
-	//highSiT = siQuadT[i];
+	highSiT = siQuadT[i];
+	highSiIndex = siQuadIndex[i];
       }
+    //printf("det: %d quad: %d index: %d\n",highSiEDet,highSiEQuad,highSiIndex);
   }
-  si_hist[highSiEDet-1][highSiEQuad-1]->Fill(calE);
+
+  if(highSiE<=0.) return kTRUE;
+
+  if(highSiEDet==0) return kTRUE;
+
+  if(highSiT<0) return kTRUE;
+
+  //printf("highSiE: %f highSiEDet: %d highSiEQuad: %d highSiT: %f\n",highSiE,highSiEDet,highSiEQuad,highSiT);
+
+  si_t_all->Fill(highSiT);
+
+  si_hist[highSiEDet-1][highSiEQuad]->Fill(highSiE);
 
   //si_t_hist[highSiEDet-1][highSiEQuad-1]->Fill(highSiT);
 
